@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: uiapp-deployment
+spec:
+  replicas: 3  # Number of desired replicas
+  selector:
+    matchLabels:
+      app: uiapp
+  strategy:
+   type: RollingUpdate
+   rollingUpdate:
+     maxUnavailable: 2 
+     maxSurge: 1     
+  template:
+    metadata:
+      labels:
+        app: uiapp
+    spec:
+      containers:
+      - name: uiapp
+        image: apatranobis59/uiapp:__IMAGE_TAG__  # Jenkins will replace this
+        resources:
+          requests:
+            memory: "350Mi"
+            cpu: "50m"
+          limits:
+            memory: "400Mi"
+            cpu: "100m" 
+        ports:
+        - containerPort: 3000
+        

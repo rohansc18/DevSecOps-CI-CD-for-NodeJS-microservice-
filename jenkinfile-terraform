@@ -1,0 +1,65 @@
+pipeline {
+    agent any
+
+    parameters {
+        choice(
+            name: 'Action',
+            choices: ['apply', 'destroy'],
+            description: 'Select whether to apply or destroy the Terraform plan'
+        )
+    }
+
+    stages {
+        stage('Git Clone') {
+            steps {
+                git branch: 'main', url: 'https://github.com/ec2tech-projects/Project-2.git'
+            }
+        }
+        
+        stage('Terraform Version Check') {
+            steps {
+                sh 'terraform --version'
+            }
+        }
+        
+        stage('Terraform Initialize') {
+            steps {
+                dir('EKS_TERRAFORM') {
+                    sh 'terraform init'
+                }
+            }
+        }
+        
+        stage('Terraform Validate') {
+            steps {
+                dir('EKS_TERRAFORM') {
+                    sh 'terraform validate'
+                }
+            }
+        }
+        
+        stage('Terraform Plan') {
+            steps {
+                dir('EKS_TERRAFORM') {
+                    sh 'terraform plan -out=tfplan'
+                }
+            }
+        }
+
+        stage('Approval') {
+            steps {
+                script {
+                    input message: "Do you want to proceed with terraform ${params.Action}?", ok: "Yes, proceed"
+                }
+            }
+        }
+        
+        stage('Terraform Apply/Destroy') {
+            steps {
+                dir('EKS_TERRAFORM') {
+                    sh "terraform ${params.Action} --auto-approve"
+                }
+            }
+        }
+    }
+}
