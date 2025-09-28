@@ -79,8 +79,8 @@ pipeline{
                 script{
                    withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){
                        sh "docker build -t uiapp ."
-                       sh "docker tag uiapp apatranobis59/uiapp:${params.IMAGE_TAG}"
-                       sh "docker push apatranobis59/uiapp:${params.IMAGE_TAG}"
+                       sh "docker tag uiapp rohansc18/uiapp:${params.IMAGE_TAG}"
+                       sh "docker push rohansc18/uiapp:${params.IMAGE_TAG}"
                     }
                 }
             }
