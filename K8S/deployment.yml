@@ -19,7 +19,7 @@ spec:
     spec:
       containers:
       - name: uiapp
-        image: apatranobis59/uiapp:__IMAGE_TAG__  # Jenkins will replace this
+        image: rohansc18/uiapp:__IMAGE_TAG__  # Jenkins will replace this
         resources:
           requests:
             memory: "350Mi"
