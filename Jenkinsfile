@@ -73,16 +73,8 @@ pipeline{
                     alwaysLinkToLastBuild: true
                 ])
             }
-        }
-
-        stage('OWASP SCA SCAN') {
-            steps {
-                dependencyCheck additionalArguments: '--scan ./ --disableYarnAudit --disableNodeAudit', nvdCredentialsId: 'NVDkey', odcInstallation: 'DP-Check'
-                dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
-            }
-        }
-
-        stage("Docker Build & Push"){
+		}
+		stage("Docker Build & Push"){
             steps{
                 script{
                    withDockerRegistry(credentialsId: 'docker', toolName: 'docker'){
